@@ -1,0 +1,49 @@
+#Linear Regression
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+
+a=pd.read_csv('salary.csv')
+X=a.iloc[:,[0]].values
+Y=a.iloc[:,1].values
+print(X)
+
+X_train,X_test,Y_train,Y_test = train_test_split(X,Y,test_size=0.3,random_state=0)
+print(X_test)
+
+b=LinearRegression()
+b.fit(X_train,Y_train)
+plt.scatter(X_test,Y_test,color='blue',label="Salary v/s Experience")
+plt.plot(X_test,b.predict(X_test),color='red')
+plt.xlabel("Experience",color='red')
+plt.ylabel("Salary",color='blue')
+plt.legend()
+plt.show()
+
+#score
+print("co-efficient of determination:",r2_score(Y_test,b.predict(X_test)))
+
+#Multiple Linear Regression
+
+
+
+df=pd.read_csv('startups.csv')
+x=df.iloc[:,:-1].values
+y=df.iloc[:,4].values
+
+print(x)
+
+cd=ColumnTransformer([('encoder',OneHotEncoder(),[3])], remainder='passthrough')
+x=np.array(cd.fit_transform(x))
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.3,random_state=0)
+jk=LinearRegression()
+jk.fit(x_train,y_train)
+y_pred=jk.predict(x_test)
+print("co-efficient of determination:",r2_score(y_test,y_pred))
+      
+
