@@ -1,0 +1,72 @@
+
+
+import numpy as nm
+import pandas as pd
+import matplotlib.pyplot as mtp
+
+a=pd.read_csv('iris.csv')
+print(a)
+
+x= a.iloc[:, [2,3]] 
+y= a.iloc[:, 4].values  
+print(x)
+
+from sklearn.model_selection import train_test_split  
+x_train, x_test, y_train, y_test= train_test_split(x, y, test_size= 0.25, random_state=0) 
+#print(x_test)
+
+from sklearn.preprocessing import StandardScaler    
+st_x= StandardScaler()  
+x_train= st_x.fit_transform(x_train)    
+x_test= st_x.transform(x_test)
+print(x_test)
+
+from sklearn.tree import DecisionTreeClassifier  
+classifier= DecisionTreeClassifier()  
+classifier.fit(x_train, y_train)  
+
+from sklearn import metrics
+y_pre= classifier.predict(x_test)  
+y_pr= classifier.predict(x_train) 
+print(metrics.accuracy_score(y_true=y_test,y_pred=y_pre))
+print(metrics.accuracy_score(y_true=y_train,y_pred=y_pr))
+
+
+
+
+
+from sklearn import tree
+fig , axes=plt.subplots(nrows = 1,ncols=1,figsize=(4,4), dpi=300)
+tree.plot_tree(classifier)
+
+#diabetes dataset
+
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.tree import DecisionTreeClassifier
+from sklearn import metrics
+
+ab=pd.read_csv('diabetes.csv')
+xz=ab.iloc[:,[0,1,2,3,4,5,6,7]].values
+yz=ab.iloc[:,8].values
+xz_train,xz_test,yz_train,yz_test=train_test_split(xz,yz,test_size=0.25,random_state=0)
+st= StandardScaler()  
+xz_train= st.fit_transform(xz_train)    
+xz_test= st.transform(xz_test)
+print(xz_test)
+
+cls= DecisionTreeClassifier()  
+cls.fit(xz_train, yz_train)  
+
+abc= cls.predict(xz_test)  
+efg= cls.predict(xz_train) 
+print(metrics.accuracy_score(y_true=yz_test,y_pred=abc))
+print(metrics.accuracy_score(y_true=yz_train,y_pred=efg))
+
+from sklearn import tree
+fig , axes=plt.subplots(nrows = 1,ncols=1,figsize=(4,4), dpi=300)
+tree.plot_tree(cls)
+fig.savefig('diabetes.png')
+
