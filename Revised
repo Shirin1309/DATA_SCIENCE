@@ -1,0 +1,103 @@
+import numpy as np
+import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_iris
+
+a=load_iris()
+
+x=a.data
+print(x)
+
+y=a.target
+print(y)
+
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.3,random_state=1)
+
+print(x_train)
+
+print(x_test)
+
+print(y_train)
+
+print(y_test)
+
+knn=KNeighborsClassifier(n_neighbors=4)
+print(knn)
+
+knn.fit(x_train,y_train)
+p=knn.predict(x_test)
+print(p)
+
+from sklearn.metrics import classification_report,confusion_matrix,accuracy_score
+
+print(confusion_matrix(y_test,p))
+
+print(classification_report(y_test,p))
+
+print(accuracy_score(y_test,p))
+
+import numpy as np
+import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+
+
+b=pd.read_csv('iris.csv')
+print(b)
+
+b.dtypes
+
+
+
+X=b.iloc[:,:-1].values
+Y=b.iloc[:,4].values
+print(Y)
+
+from sklearn.preprocessing import LabelEncoder
+jk=LabelEncoder()
+jk.fit(Y)
+Y=jk.transform(Y)
+print(Y)
+
+X_train,X_test,Y_train,Y_test=train_test_split(X,Y,test_size=0.3,random_state=1)
+print(Y_test)
+
+knn=KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train,Y_train)
+l=knn.predict(X_test)
+print(l)
+
+print(accuracy_score(y_test,l))
+
+
+
+#Naive bayes
+
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score,confusion_matrix
+
+
+z=pd.read_csv("iris.csv")
+print(z)
+
+N=z.iloc[:,:-1].values
+#print(N)
+M=z.iloc[:,4].values
+#print(M)
+
+f=LabelEncoder()
+f.fit(M)
+M=f.transform(M)
+print(M)
+
+N_train,N_test,M_train,M_test=train_test_split(N,M,test_size=0.3,random_state=1)
+print(N_train)
+
+gnb=GaussianNB()
+gnb.fit(N_train,M_train)
+
