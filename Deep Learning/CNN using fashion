@@ -1,0 +1,29 @@
+import tensorflow as tf
+from tensorflow import keras
+import matplotlib.pyplot as plt
+a=keras.datasets.fashion_mnist
+(x_train,y_train),(x_test,y_test)=a.load_data()
+print("shape of x_train",x_train.shape)
+print("shape of x_test",x_test.shape)
+print("shape of y_train",y_train.shape)
+print("shape of y_test",y_test.shape)
+plt.imshow(x_train[2],cmap='binary')
+x_train=x_train.reshape((60000,28,28,1))
+x_test=x_test.reshape((10000),28,28,1)
+x_train=x_train.astype('float32')/255
+x_test=x_test.astype('float32')/255
+b=keras.models.Sequential()
+b.add(keras.layers.Conv2D(32,(3,3),activation="relu",input_shape=x_train.shape[1:]))
+b.add(keras.layers.Conv2D(64,(3,3),activation="relu"))
+b.add(keras.layers.Conv2D(64,(3,3),activation="relu"))
+b.add(keras.layers.MaxPooling2D((2,2)))
+b.add(keras.layers.Dropout(0.25))
+b.add(keras.layers.Flatten())
+b.add(keras.layers.Dense(units=128,activation="relu"))
+b.add(keras.layers.Dropout(0.25))
+b.add(keras.layers.Dense(units=10,activation="softmax"))
+b.summary()
+b.compile(loss='sparse_categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
+b.fit(x_train,y_train,epochs=1,batch_size=16)
+test_loss,test_acc=b.evaluate(x_test,y_test)
+print(test_loss,test_acc)
